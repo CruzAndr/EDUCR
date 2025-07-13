@@ -18,10 +18,13 @@ const Sidebar = ({ isMinimized, toggleSidebar }) => {
 
   const menuItems = [
     { name: "Inicio", path: "/home", icon: LayoutGrid },
-    { name: "Profesores", path: "/teachers", icon: GraduationCap },
-    { name: "Sugerencias", path: "/calendarSuggestions", icon: BookOpen },
-    { name: "Asignaciones", path: "/calendarAssignments", icon: BookOpen },
-    { name: "Eventos", path: "/horarios", icon: Users },
+    //{ name: "Profesores", path: "/teachers", icon: GraduationCap },
+    { name: "Crear Profesor", path: "/CrearUsuario", icon: GraduationCap   },
+    { name: "Crear Aula", path: "/CrearAula", icon: GraduationCap },
+    { name: "Crear Curso", path: "/CrearCurso", icon: GraduationCap },
+    { name: "Sugerencias", path: "./calendarSuggestions", icon: BookOpen },
+    { name: "Asignaciones", path: "./calendarAssignments", icon: BookOpen },
+    { name: "Eventos", path: "./horarios", icon: Users },
     { name: "Salir", path: "/logout", icon: LogOut },
   ];
 
