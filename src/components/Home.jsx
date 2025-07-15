@@ -12,19 +12,19 @@ const Home = () => {
       titulo: "Personal docente de nuevo ingreso recibió inducción a la UCR",
       fecha: "7 mar 2025",
       resumen: "77 personas participaron en la primera sesión de inducción organizada por la Vicerrectoría de Docencia y RIFED.",
-      img: "https://www.ucr.ac.cr/medios/fotos/2025/induccion-docente.jpg"
+      icono: "🎓"
     },
     {
       titulo: "Consejo discute eliminar autorización del profesor para matrícula",
       fecha: "14 feb 2024",
       resumen: "El Consejo Universitario evalúa eliminar la autorización manual del profesor consejero en el trámite de matrícula.",
-      img: "https://www.ucr.ac.cr/medios/fotos/2024/consejo.jpg"
+      icono: "🧑‍⚖️"
     },
     {
       titulo: "Profesores de cursos libres trabajan ad honorem en la UCR",
       fecha: "8 ene 2025",
       resumen: "Los docentes de cursos libres no reciben remuneración; ofrecen lecciones ad honorem.",
-      img: "https://www.ucr.ac.cr/medios/fotos/2025/profesores.jpg"
+      //img: "https://www.ucr.ac.cr/medios/fotos/2025/profesores.jpg"
     }
   ];
 
@@ -55,7 +55,7 @@ const Home = () => {
   {/* Banner de bienvenida */}
 <section className="bg-white border border-gray-200 rounded-xl p-6 flex flex-col md:flex-row justify-between items-center shadow mb-6">
   <div className="max-w-lg text-center md:text-left">
-    <h2 className="text-2xl font-bold text-gray-800 leading-tight">¡Bienvenido, Profesor!</h2>
+    <h2 className="text-2xl font-bold text-gray-800 leading-tight">¡Bienvenido!</h2>
     <p className="mt-2 text-sm text-gray-600">
       Nos alegra tenerte en la plataforma EDUCR. Aquí puedes organizar tu horario, registrar asignaciones y consultar eventos con facilidad.
     </p>
@@ -124,17 +124,17 @@ className="bg-white p-4 rounded-xl shadow-md hover:shadow-lg transition space-y-
             {
               titulo: "Guía para registro de asignaturas",
               descripcion: "Aprende paso a paso cómo registrar asignaturas en la plataforma.",
-              img: "https://undraw.co/api/illustrations/343a6c67-7c50-4682-bb52-4eb9486e85f8" // puedes reemplazar
+              //img: "https://undraw.co/api/illustrations/343a6c67-7c50-4682-bb52-4eb9486e85f8" // puedes reemplazar
             },
             {
               titulo: "Manual de asignación docente",
               descripcion: "Instrucciones detalladas para asignar cursos a profesores.",
-              img: "https://undraw.co/api/illustrations/70f0ecb1-36ed-4740-831f-f6d6df170d85" // puedes reemplazar
+              //img: "https://undraw.co/api/illustrations/70f0ecb1-36ed-4740-831f-f6d6df170d85" // puedes reemplazar
             },
             {
               titulo: "Resolución de conflictos de horario",
               descripcion: "Guía para resolver traslapes, choques y errores comunes.",
-              img: "https://undraw.co/api/illustrations/04e0e11c-163d-4e18-8920-efcf61fa6cb0" // puedes reemplazar
+              //img: "https://undraw.co/api/illustrations/04e0e11c-163d-4e18-8920-efcf61fa6cb0" // puedes reemplazar
             },
           ].map((g, i) => (
             <div

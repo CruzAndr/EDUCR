@@ -2,98 +2,84 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "./context/AuthContext";
 
+const usuariosValidos = [
+  {
+    usuario: "juan@correo.com",
+    password: "12345",
+    rol: "Docente",
+    id: 1,
+    nombre: "Juan Pérez",
+  },
+  {
+    usuario: "ana@correo.com",
+    password: "admin123",
+    rol: "Coordinador Académico",
+    id: 2,
+    nombre: "Ana López",
+  },
+  {
+    usuario: "carla@correo.com",
+    password: "direccion",
+    rol: "Dirección",
+    id: 3,
+    nombre: "Carla Ramírez",
+  },
+];
 
 const Login = () => {
   const navigate = useNavigate();
-
-  const API_URL = import.meta.env.VITE_API_URL;
+  const { login } = useAuth();
 
   const [form, setForm] = useState({ usuario: "", password: "" });
-  const [institutions, setInstitutions] = useState([]);
-  const [institution, setInstitution] = useState(null);
   const [error, setError] = useState(null);
-  const { login } = useAuth();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleLogin = async (e) => {
+  const handleLogin = (e) => {
     e.preventDefault();
     setError(null);
 
-    try {    
-      const res = await fetch(`${API_URL}/user/auth/login/`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
-      });
-      console.log("hola")
-      const data = await res.json();
-      console.log(data)
+    const usuario = usuariosValidos.find(
+      (u) => u.usuario === form.usuario && u.password === form.password
+    );
 
-      if (!res.ok || !Array.isArray(data)) {
-        setError("Usuario o contraseña incorrecta.");
-        return;
-      }
-
-      if (data.length === 0) {
-        setError("No hay colegios asociados.");
-        return;
-      }
-
-      // Mostrar colegios disponibles
-      setInstitutions(data);
-    } catch (err) {
-      setError("Error al intentar iniciar sesión.");
+    if (!usuario) {
+      setError("Usuario o contraseña incorrecta.");
+      return;
     }
-  };
 
-  const handleSeleccionarInstitucion = async () => {
-    if (!institution) return;
+    const perfil = {
+      id: usuario.id,
+      nombre: usuario.nombre,
+      correo: usuario.usuario,
+      rol: usuario.rol,
+    };
 
-    try {
-      console.log(API_URL)
-      const res = await fetch(`${API_URL}/user/auth/institucion/`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          institucion_id: institution,
-          usuario: form.usuario,
-        }),
-      });
+    const fakeToken = "fake-jwt-token";
+    const pageSize = 10;
 
-      const data = await res.json();
-
-      if (!res.ok || !data.access_token) {
-        setError("No se pudo cargar el perfil del colegio.");
-        return;
-      }
-
-      // Guardar token y datos
-      login(data.perfil, data.access_token, data.colegio, data.conf_paginacion, form.password);
-      navigate("/students");
-    } catch (err) {
-      console.error("Error al intentar iniciar sesión:", err);
-      setError("Error al seleccionar institución.");
-    }
+    login(perfil, fakeToken, null, pageSize, form.password);
+    navigate("/home");
   };
 
   return (
-    <div className="max-w-md mx-auto mt-10">
-      <h1 className="text-2xl font-bold mb-6 text-center text-blue-700">Iniciar sesión</h1>
-
-      {!institutions.length ? (
-        <form onSubmit={handleLogin} className="space-y-4">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-black via-[#001F3F] to-black animate-gradient-x">
+      <div className="backdrop-blur-sm bg-white/10 border border-white/20 shadow-2xl rounded-2xl p-10 max-w-md w-full space-y-6">
+        <h1 className="text-3xl font-extrabold text-center text-white drop-shadow-lg">
+          Iniciar sesión en EDUCR
+        </h1>
+        <form onSubmit={handleLogin} className="space-y-5">
           <input
             type="text"
             name="usuario"
-            placeholder="Cédula"
+            placeholder="Correo electrónico"
             value={form.usuario}
             onChange={handleChange}
             required
-            className="w-full border rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-400"
+            className="w-full px-4 py-3 bg-white/20 text-white placeholder-gray-300 border border-white/30 rounded-lg focus:ring-2 focus:ring-cyan-400 focus:outline-none backdrop-blur-sm"
           />
           <input
             type="password"
@@ -102,41 +88,20 @@ const Login = () => {
             value={form.password}
             onChange={handleChange}
             required
-            className="w-full border rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-400"
+            className="w-full px-4 py-3 bg-white/20 text-white placeholder-gray-300 border border-white/30 rounded-lg focus:ring-2 focus:ring-cyan-400 focus:outline-none backdrop-blur-sm"
           />
-          {error && <p className="text-red-600 text-sm">{error}</p>}
+          {error && <p className="text-red-400 text-sm">{error}</p>}
           <button
             type="submit"
-            className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg w-full"
+            className="w-full bg-cyan-500 hover:bg-cyan-600 text-white font-semibold py-3 rounded-lg transition shadow-md hover:shadow-lg"
           >
             Entrar
           </button>
         </form>
-      ) : (
-        <div className="space-y-4">
-          <p className="text-gray-700 font-medium">Seleccione su institución:</p>
-          <select
-            value={institution || ""}
-            onChange={(e) => setInstitution(e.target.value)}
-            className="w-full border rounded-lg p-3"
-          >
-            <option value="">-- Seleccionar --</option>
-            {institutions.map((ins) => (
-              <option key={ins.id} value={ins.id}>
-                {ins.nombre} – {ins.region}
-              </option>
-            ))}
-          </select>
-
-          <button
-            onClick={handleSeleccionarInstitucion}
-            className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg w-full"
-            disabled={!institution}
-          >
-            Acceder
-          </button>
-        </div>
-      )}
+        <p className="text-center text-sm text-gray-300">
+          © 2025 Plataforma EDUCR
+        </p>
+      </div>
     </div>
   );
 };

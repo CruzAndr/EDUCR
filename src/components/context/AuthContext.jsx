@@ -7,8 +7,12 @@ export const AuthProvider = ({ children }) => {
     JSON.parse(localStorage.getItem("perfil"))
   );
   const [password, setPassword] = useState(null);
-  const [pageSize, setPageSize] = useState(() => localStorage.getItem("pageSize"));
-  const [token, setToken] = useState(() => localStorage.getItem("access_token"));
+  const [pageSize, setPageSize] = useState(() =>
+    localStorage.getItem("pageSize")
+  );
+  const [token, setToken] = useState(() =>
+    localStorage.getItem("access_token")
+  );
   const [institution, setInstitution] = useState(() =>
     JSON.parse(localStorage.getItem("colegio"))
   );
@@ -17,24 +21,35 @@ export const AuthProvider = ({ children }) => {
     localStorage.setItem("access_token", jwt);
     localStorage.setItem("perfil", JSON.stringify(perfil));
     localStorage.setItem("colegio", JSON.stringify(institution));
+    localStorage.setItem("pageSize", pageSize);
     setUser(perfil);
     setToken(jwt);
     setInstitution(institution);
     setPassword(rawPassword); // solo en memoria
   };
-  
+
   const logout = () => {
     localStorage.clear();
     setUser(null);
     setToken(null);
-    setColegio(null);
-    setPassword(null); // limpiar también
+    setInstitution(null); // ✅ corregido
+    setPassword(null);
   };
 
   const isAuthenticated = !!token;
 
   return (
-    <AuthContext.Provider value={{ user, token, institution, login, password, logout, isAuthenticated }}>
+    <AuthContext.Provider
+      value={{
+        user,
+        token,
+        institution,
+        login,
+        password,
+        logout,
+        isAuthenticated,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );
